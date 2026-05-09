@@ -1,0 +1,20 @@
+schema_version: 1
+kind: harness_template_member_snapshot
+orbit_id: easy-symphony-orbit
+member_source: manual
+snapshot:
+    exported_paths:
+        - docs/easy-symphony-orbit/symphony-rules.md
+        - skills/easy-symphony-orbit/operate-symphony/SKILL.md
+        - skills/easy-symphony-orbit/setup-symphony/REFERENCE.md
+        - skills/easy-symphony-orbit/setup-symphony/SKILL.md
+        - skills/easy-symphony-orbit/setup-symphony/scripts/select_dashboard_port.js
+        - skills/easy-symphony-orbit/setup-symphony/scripts/smoke_app_server.js
+    file_digests:
+        docs/easy-symphony-orbit/symphony-rules.md: 522518c9d31223d7ce72831b307b9923739eeae04cc76532c994cbc1a069494b
+        skills/easy-symphony-orbit/operate-symphony/SKILL.md: cc41c7cf2a8577aac00dddbac30993967949a1f63df1286da997c87f3c24d6bd
+        skills/easy-symphony-orbit/setup-symphony/REFERENCE.md: 07abaf51ad7cb271ef2e83aa20229780ae25a713387f3f192db5ecd504b7a695
+        skills/easy-symphony-orbit/setup-symphony/SKILL.md: 8752271e66b07b041193a1484774ae84de4696958d1a829c81bae87f788ae99a
+        skills/easy-symphony-orbit/setup-symphony/scripts/select_dashboard_port.js: 82a71ed3a6894b07e9c25acc767bfe161ac8fd9850c42dabaed19c17b22e62b0
+        skills/easy-symphony-orbit/setup-symphony/scripts/smoke_app_server.js: dc65414fc88f4f1bc31b0d859053614cb49ac4f9bdc60adce06979cb1b9fcb73
+    variables: {}

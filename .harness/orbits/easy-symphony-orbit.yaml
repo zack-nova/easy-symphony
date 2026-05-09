@@ -1,0 +1,118 @@
+package:
+    type: orbit
+    name: easy-symphony-orbit
+description: Prepare and operate Symphony for target repositories.
+meta:
+    file: .harness/orbits/easy-symphony-orbit.yaml
+    agents_template: |
+        # Easy Symphony Harness
+
+        Easy Symphony Harness prepares and operates Symphony for target repositories.
+
+        It is not:
+
+        - the Symphony implementation
+        - a target-repository delivery workflow
+        - a Symphony-launched execution-agent workflow
+
+        Read `docs/easy-symphony-orbit/symphony-rules.md` before doing work in this harness.
+    humans_template: |
+        # HUMANS.md - Easy Symphony Harness
+
+        Use this harness when you want an agent to make Symphony usable for a target repository and explain how to operate it.
+
+        Start with `BOOTSTRAP.md` once per workspace. Then invoke `setup-symphony` with a target repository URL. Use `operate-symphony` only after a target has already been configured.
+
+        Available skills:
+
+        - `setup-symphony`: configure, validate, start, and hand off Symphony for a target repository.
+        - `operate-symphony`: check status, start, stop, reload, show logs, and rerun readiness checks for an already configured target.
+
+        You may be asked to confirm tracker backend, tracker scope, active states, first-turn prompts, tracker metadata changes, missing secrets, Codex installation, or Live Mode.
+
+        The harness should leave you with a dashboard URL, generated workflow path, stop command, state ownership map, runtime readiness summary, and instructions for creating or selecting test work.
+    bootstrap_template: |
+        # BOOTSTRAP.md - Easy Symphony Harness
+
+        This is an agent-executable first-run checklist. It prepares local Symphony and Codex runtime readiness for this workspace. Target-repository workflow configuration belongs to `setup-symphony`, not here.
+
+        ## Rules
+
+        - Do low-risk inspection and workspace-local writes directly.
+        - Ask before installing Codex, installing system packages, changing shell profiles, changing global toolchain versions, trusting projects, or persisting credentials.
+        - Do not write token values to files.
+        - Keep Symphony implementation state under `.runtime/symphony/`; keep `.runtime/` git ignored.
+
+        ## Checklist
+
+        1. Confirm workspace root:
+           - Run `pwd`.
+           - Ensure `.gitignore` contains `.runtime/` and `.symphony-setups/`.
+
+        2. Inspect prerequisites:
+           - Run `command -v git`.
+           - Run `command -v mise`.
+           - Run `command -v codex`.
+           - If `mise` is available, use `mise exec -- elixir --version` after checkout.
+           - If `codex` is missing or unusable, ask before helping install it.
+           - If Elixir/Erlang tooling is missing and cannot be provided through existing `mise`, ask before changing machine-level tooling.
+
+        3. Install or refresh Symphony source checkout:
+           - Create `.runtime/`.
+           - If `.runtime/symphony/.git` exists, run `git -C .runtime/symphony fetch --all --prune`.
+           - Otherwise run `git clone https://github.com/zack-nova/symphony .runtime/symphony`.
+
+        4. Build Symphony:
+           - Run `cd .runtime/symphony/elixir`.
+           - If `mise` is available, run `mise trust` only after operator approval, then `mise install`.
+           - Run `mise exec -- mix setup` and `mise exec -- mix build` when using `mise`.
+           - If not using `mise`, run `mix setup` and `mix build` only when the installed Elixir/Erlang versions satisfy the checkout requirements.
+
+        5. Record local runtime discovery:
+           - Write `.runtime/easy-symphony.env` with local paths and commands only.
+           - Include at least `SYMPHONY_ROOT`, `SYMPHONY_ELIXIR_DIR`, and `SYMPHONY_RUN_COMMAND`.
+           - Do not commit this file.
+
+        6. Handoff:
+           - Report Symphony checkout path, build result, Codex path/version, blockers, and the next command: invoke `setup-symphony` with a target repository URL.
+    include_in_projection: true
+    include_in_write: true
+    include_in_export: true
+    include_description_in_orchestration: true
+capabilities:
+    commands:
+        paths:
+            include:
+                - commands/easy-symphony-orbit/**/*.md
+    skills:
+        local:
+            paths:
+                include:
+                    - skills/easy-symphony-orbit/*
+content:
+    - name: easy-symphony-rules
+      role: rule
+      paths:
+        include:
+            - docs/easy-symphony-orbit/**
+behavior:
+    scope:
+        projection_roles:
+            - meta
+            - subject
+            - rule
+            - process
+        write_roles:
+            - meta
+            - rule
+        export_roles:
+            - meta
+            - rule
+        orchestration_roles:
+            - meta
+            - rule
+            - process
+    orchestration:
+        include_orbit_description: true
+        materialize_agents_from_meta: true
+
