@@ -154,6 +154,8 @@ State prompts are configured with tracker-native state values and appended to th
 
 Ask for a state prompt for every active state unless the repository says to use one generic workflow body prompt.
 
+When a state prompt includes required closeout before a terminal state, order the prompt so closeout happens before the terminal tracker mutation. Symphony stops active agents when a running issue enters a configured terminal state, so required follow-up work must not be phrased as happening after that terminal transition. For a GitHub `state:to-merge` prompt, dependency-release scanning and related issue label updates must be a completion gate after land succeeds but before the current issue is moved to terminal `state:merged`.
+
 Example:
 
 ```yaml
